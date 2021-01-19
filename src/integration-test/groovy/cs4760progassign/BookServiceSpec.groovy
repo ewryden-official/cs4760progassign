@@ -1,4 +1,4 @@
-package cs4760progAssign
+package cs4760progassign
 
 import grails.testing.mixin.integration.Integration
 import grails.gorm.transactions.Rollback
@@ -7,37 +7,37 @@ import org.hibernate.SessionFactory
 
 @Integration
 @Rollback
-class AuthorServiceSpec extends Specification {
+class BookServiceSpec extends Specification {
 
-    AuthorService authorService
+    BookService bookService
     SessionFactory sessionFactory
 
     private Long setupData() {
         // TODO: Populate valid domain instances and return a valid ID
-        //new Author(...).save(flush: true, failOnError: true)
-        //new Author(...).save(flush: true, failOnError: true)
-        //Author author = new Author(...).save(flush: true, failOnError: true)
-        //new Author(...).save(flush: true, failOnError: true)
-        //new Author(...).save(flush: true, failOnError: true)
+        //new Book(...).save(flush: true, failOnError: true)
+        //new Book(...).save(flush: true, failOnError: true)
+        //Book book = new Book(...).save(flush: true, failOnError: true)
+        //new Book(...).save(flush: true, failOnError: true)
+        //new Book(...).save(flush: true, failOnError: true)
         assert false, "TODO: Provide a setupData() implementation for this generated test suite"
-        //author.id
+        //book.id
     }
 
     void "test get"() {
         setupData()
 
         expect:
-        authorService.get(1) != null
+        bookService.get(1) != null
     }
 
     void "test list"() {
         setupData()
 
         when:
-        List<Author> authorList = authorService.list(max: 2, offset: 2)
+        List<Book> bookList = bookService.list(max: 2, offset: 2)
 
         then:
-        authorList.size() == 2
+        bookList.size() == 2
         assert false, "TODO: Verify the correct instances are returned"
     }
 
@@ -45,30 +45,30 @@ class AuthorServiceSpec extends Specification {
         setupData()
 
         expect:
-        authorService.count() == 5
+        bookService.count() == 5
     }
 
     void "test delete"() {
-        Long authorId = setupData()
+        Long bookId = setupData()
 
         expect:
-        authorService.count() == 5
+        bookService.count() == 5
 
         when:
-        authorService.delete(authorId)
+        bookService.delete(bookId)
         sessionFactory.currentSession.flush()
 
         then:
-        authorService.count() == 4
+        bookService.count() == 4
     }
 
     void "test save"() {
         when:
         assert false, "TODO: Provide a valid instance to save"
-        Author author = new Author()
-        authorService.save(author)
+        Book book = new Book()
+        bookService.save(book)
 
         then:
-        author.id != null
+        book.id != null
     }
 }
