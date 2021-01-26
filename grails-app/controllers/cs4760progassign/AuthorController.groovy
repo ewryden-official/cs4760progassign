@@ -1,4 +1,4 @@
-package cs4760progAssign
+package cs4760progassign
 
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*

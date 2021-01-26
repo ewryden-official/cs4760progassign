@@ -6,11 +6,17 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
+<!DOCTYPE html>
 <html>
 <head>
-  <title></title>
-</head>
-<body>
+  <title><g:layoutTitle default="Book Store"/></title>
+  <asset:stylesheet src="application.css"/>
 
+  <g:layoutHead/>
+</head>
+  <body>
+  <g:render template="/navbar" />
+  <g:layoutBody/>
+  <asset:javascript src="application.js"/>
 </body>
 </html>

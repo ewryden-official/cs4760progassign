@@ -1,4 +1,4 @@
-package cs4760progAssign
+package cs4760progassign
 
 import grails.gorm.services.Service
 

@@ -1,4 +1,4 @@
-package cs4760progAssign
+package cs4760progassign
 
 import grails.testing.gorm.DomainUnitTest
 import grails.testing.web.controllers.ControllerUnitTest

@@ -7,12 +7,22 @@
 
 <!DOCTYPE html>
 <html>
-<head></head>
-<body>
+<head>
+    <meta name="layout" content="site"/>
+    <title>Book Store Home</title>
+</head>
 
-<h1>Base index.gsp</h1>
+<body>
+<div class="jumbotron jumb-margin">
+    <div class="container">
+        <h1>Book Store</h1>
+    </div>
+</div>
+
 <p>Under construction</p>
-<p><g:link controller="controllerList">Go to ControllerList</g:link> </p>
+<p>
+    <g:link controller="controllerList">Go to ControllerList</g:link>
+</p>
 
 </body>
 </html>

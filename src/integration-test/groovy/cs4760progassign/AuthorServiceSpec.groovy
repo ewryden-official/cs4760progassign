@@ -14,20 +14,20 @@ class AuthorServiceSpec extends Specification {
 
     private Long setupData() {
         // TODO: Populate valid domain instances and return a valid ID
-        //new Author(...).save(flush: true, failOnError: true)
-        //new Author(...).save(flush: true, failOnError: true)
-        //Author author = new Author(...).save(flush: true, failOnError: true)
-        //new Author(...).save(flush: true, failOnError: true)
-        //new Author(...).save(flush: true, failOnError: true)
-        assert false, "TODO: Provide a setupData() implementation for this generated test suite"
-        //author.id
+        Author author = new Author(name: "Test Author 0").save(flush: true, failOnError: true)
+        new Author(name: "Test Author 1").save(flush: true, failOnError: true)
+        new Author(name: "Test Author 2").save(flush: true, failOnError: true)
+        new Author(name: "Test Author 3").save(flush: true, failOnError: true)
+        new Author(name: "Test Author 4").save(flush: true, failOnError: true)
+        // assert false, "TODO: Provide a setupData() implementation for this generated test suite"
+        author.id
     }
 
     void "test get"() {
-        setupData()
+        Long authorId = setupData()
 
         expect:
-        authorService.get(1) != null
+        authorService.get(authorId) != null
     }
 
     void "test list"() {
@@ -38,34 +38,36 @@ class AuthorServiceSpec extends Specification {
 
         then:
         authorList.size() == 2
-        assert false, "TODO: Verify the correct instances are returned"
+        // assert false, "TODO: Verify the correct instances are returned"
+        authorList[0].name.contains("Test Author ")
+        authorList[1].name.contains("Test Author ")
     }
 
     void "test count"() {
         setupData()
 
         expect:
-        authorService.count() == 5
+        authorService.count() == 7
     }
 
     void "test delete"() {
         Long authorId = setupData()
 
         expect:
-        authorService.count() == 5
+        authorService.count() == 7
 
         when:
         authorService.delete(authorId)
         sessionFactory.currentSession.flush()
 
         then:
-        authorService.count() == 4
+        authorService.count() == 6
     }
 
     void "test save"() {
         when:
-        assert false, "TODO: Provide a valid instance to save"
-        Author author = new Author()
+        // assert false, "TODO: Provide a valid instance to save"
+        Author author = new Author(name: "Author").save(flush: true, failOnError: true)
         authorService.save(author)
 
         then:
