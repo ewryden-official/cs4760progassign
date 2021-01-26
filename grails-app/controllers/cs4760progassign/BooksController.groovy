@@ -1,99 +1,39 @@
 package cs4760progassign
 
-import grails.validation.ValidationException
-import static org.springframework.http.HttpStatus.*
-
 class BooksController {
+    static final boolean debugIndex = true
+    def index() {
 
-    BooksService booksService
+        // Book.list() gets all Book instances from the database and puts them in a list.
+        def bks = Book.listOrderByTitle()
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond booksService.list(params), model:[booksCount: booksService.count()]
-    }
-
-    def show(Long id) {
-        respond booksService.get(id)
-    }
-
-    def create() {
-        respond new Books(params)
-    }
-
-    def save(Books books) {
-        if (books == null) {
-            notFound()
-            return
+        // println outputs to console
+        if(debugIndex){
+            println ""
+            bks.each{ println it.title+" by "+Author.get(it.authorId).name}
         }
 
-        try {
-            booksService.save(books)
-        } catch (ValidationException e) {
-            respond books.errors, view:'create'
-            return
+        // Make a list of all books title and authors
+        def bkList = []
+        for(int i=0; i<bks.size; i++){
+            def bkAuthor = [:]
+            bkAuthor.put('title', bks[i].title)
+            bkAuthor.put('author', Author.get(bks[i].authorId).name)
+            bkList << bkAuthor
+        }
+        if(debugIndex){
+            println " "
+            println bkList
         }
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'books.label', default: 'Books'), books.id])
-                redirect books
-            }
-            '*' { respond books, [status: CREATED] }
-        }
-    }
+        // So that the unit test can access the model, we need
+        // to explicitly use the render method and specify the model.
+        // We also have to explicitly specify the view, or
+        // text will be rendered and not the view.
+        render view: "index", model: [bkList: bkList]
 
-    def edit(Long id) {
-        respond booksService.get(id)
-    }
-
-    def update(Books books) {
-        if (books == null) {
-            notFound()
-            return
-        }
-
-        try {
-            booksService.save(books)
-        } catch (ValidationException e) {
-            respond books.errors, view:'edit'
-            return
-        }
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'books.label', default: 'Books'), books.id])
-                redirect books
-            }
-            '*'{ respond books, [status: OK] }
-        }
-    }
-
-    def delete(Long id) {
-        if (id == null) {
-            notFound()
-            return
-        }
-
-        booksService.delete(id)
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'books.label', default: 'Books'), id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
-    protected void notFound() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'books.label', default: 'Books'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*'{ render status: NOT_FOUND }
-        }
+        // If we did not have to access the model in the view
+        // then we could use the default behavior and return
+        // [bkList: bkList]
     }
 }
