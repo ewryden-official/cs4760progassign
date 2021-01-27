@@ -1,99 +1,40 @@
 package cs4760progassign
 
-import grails.validation.ValidationException
-import static org.springframework.http.HttpStatus.*
-
 class AuthorsController {
+    static final boolean debugIndex = true
+    def index() {
 
-    AuthorsService authorsService
+        // Author.list() gets all Author instances from the database and puts them in a list.
+        def authors = Author.listOrderByName()
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond authorsService.list(params), model:[authorsCount: authorsService.count()]
-    }
-
-    def show(Long id) {
-        respond authorsService.get(id)
-    }
-
-    def create() {
-        respond new Authors(params)
-    }
-
-    def save(Authors authors) {
-        if (authors == null) {
-            notFound()
-            return
-        }
-
-        try {
-            authorsService.save(authors)
-        } catch (ValidationException e) {
-            respond authors.errors, view:'create'
-            return
-        }
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'authors.label', default: 'Authors'), authors.id])
-                redirect authors
+        // println outputs to console
+        if(debugIndex){
+            println ""
+            authors.each{
+                println it.name+"\n"+it.books.each{println "\t"+it.title}
             }
-            '*' { respond authors, [status: CREATED] }
-        }
-    }
-
-    def edit(Long id) {
-        respond authorsService.get(id)
-    }
-
-    def update(Authors authors) {
-        if (authors == null) {
-            notFound()
-            return
         }
 
-        try {
-            authorsService.save(authors)
-        } catch (ValidationException e) {
-            respond authors.errors, view:'edit'
-            return
+        // Make a list of all books title and authors
+        def authorList = []
+        for(int i=0; i<authors.size; i++){
+            def authorBooks = [:]
+            authorBooks.put('name', authors[i].name)
+            authorBooks.put('books', authors[i].books)
+            authorList << authorBooks
+        }
+        if(debugIndex){
+            println " "
+            println authorList
         }
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'authors.label', default: 'Authors'), authors.id])
-                redirect authors
-            }
-            '*'{ respond authors, [status: OK] }
-        }
-    }
+        // So that the unit test can access the model, we need
+        // to explicitly use the render method and specify the model.
+        // We also have to explicitly specify the view, or
+        // text will be rendered and not the view.
+        render view: "index", model: [authorList: authorList]
 
-    def delete(Long id) {
-        if (id == null) {
-            notFound()
-            return
-        }
-
-        authorsService.delete(id)
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'authors.label', default: 'Authors'), id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
-    protected void notFound() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'authors.label', default: 'Authors'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*'{ render status: NOT_FOUND }
-        }
+        // If we did not have to access the model in the view
+        // then we could use the default behavior and return
     }
 }
