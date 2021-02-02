@@ -2,7 +2,9 @@ package cs4760progassign
 
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
+import grails.plugin.springsecurity.annotation.Secured
 
+@Secured(['ROLE_ADMIN'])
 class BookController {
 
     BookService bookService
