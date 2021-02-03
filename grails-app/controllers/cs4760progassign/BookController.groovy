@@ -98,4 +98,9 @@ class BookController {
             '*'{ render status: NOT_FOUND }
         }
     }
+
+    def showRecentBook() {
+        def book = Book.last();
+        render "${book.getTitle()} by ${book.getAuthor()}"
+    }
 }

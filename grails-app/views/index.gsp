@@ -20,6 +20,8 @@
 </div>
 <g:link controller="home" action="showTime" elementId="timeLink">Show the time!</g:link>
 <div id="time"> time </div>
+<div>Most Recent Book</div>
+<div id="book"></div>
 
 <p>Under construction</p>
 <p>
