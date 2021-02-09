@@ -19,7 +19,14 @@
             <g:if test="${flash.message}">
             <div class="message" role="status">${flash.message}</div>
             </g:if>
-            <f:display bean="book" />
+            <ol class="property-list book">
+                <f:with bean="book">
+                    <f:display property="title" widegt-label="Title" />
+                    <f:display property="author" label="Author"/>
+                    <f:display property="publishYear" label="Publication Year"/>
+                    <f:display property="cover"/>
+                </f:with>
+            </ol>
             <g:form resource="${this.book}" method="DELETE">
                 <fieldset class="buttons">
                     <g:link class="edit" action="edit" resource="${this.book}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
